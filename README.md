@@ -48,18 +48,26 @@ The following software is required:
 - libvirt(Linux only)
 - Vagrant
 - git
+- vim
 
 
 ### Starting lab environment
 The lab environment can be provisioned using Vagrant as follows:
 
 ```
+git clone https://github.com/li9com/learn-docker.git
+cd learn-docker
 vagrant up
 ```
 
+### Connecting to Lab VM
 
+Once VM is provisioned, you may connect to VM using SSH as follows:
 
-The lab environment may be 
+```
+vagrant ssh
+```
+
 
 ## Authors
 Artemii Kropachev
