@@ -425,3 +425,5 @@ REPOSITORY          TAG                 IMAGE ID            CREATED             
 apache              latest              2a51bb06dc8b        2 weeks ago         132 MB
 docker.io/httpd     latest              2a51bb06dc8b        2 weeks ago         132 MB
 ```
+
+- Untag the "apache:latest" image
