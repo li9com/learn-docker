@@ -320,10 +320,117 @@ Custom page
 New line
 ```
 
+## Persistent MariaDB
+
 - Remove all containers
 
 ```
 docker rm -f $(docker ps -aq)
 ```
 
-##
+- Check location of MariaDB data
+
+```
+[vagrant@node1 learn-docker]$ docker inspect --format='{{ .Config.Volumes }}' mariadb
+map[/var/lib/mysql:{}]
+``` 
+
+Note! it looks like /var/lib/mysql should be used for persistent storage
+
+- Configure mariadb persistent storage
+
+```
+sudo mkdir -p /data/mysql
+sudo chcon -t container_file_t /data/mysql
+```
+
+- Start a mariadb container 
+
+```
+docker run -d --name mariadb \
+   -v /data/mysql:/var/lib/mysql \
+   -e MYSQL_ROOT_PASSWORD=secret \
+   -e MYSQL_USER=dbuser \
+   -e MYSQL_PASSWORD=dbpassword \
+   -e MYSQL_DATABASE=exampledb \
+   mariadb
+```
+- Check the status
+
+```
+[vagrant@node1 ~]$ docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
+b23db07b10e8        mariadb             "docker-entrypoint..."   2 seconds ago       Up 1 second         3306/tcp            mariadb
+```
+
+- Make sure that service works
+
+```
+[vagrant@node1 ~]$ docker exec -it mariadb mysql -udbuser -pdbpassword -h127.0.0.1 -e 'show databases;' exampledb
++--------------------+
+| Database           |
++--------------------+
+| exampledb          |
+| information_schema |
++--------------------+
+```
+
+- Make sure that files are stored on the persistent storage
+
+```
+[vagrant@node1 ~]$ ls -ln /data/mysql/
+total 122940
+-rw-rw----. 1 999 999    16384 Dec  4 07:21 aria_log.00000001
+-rw-rw----. 1 999 999       52 Dec  4 07:21 aria_log_control
+drwx------. 2 999 999     4096 Dec  4 07:21 exampledb
+-rw-rw----. 1 999 999      976 Dec  4 07:21 ib_buffer_pool
+-rw-rw----. 1 999 999 12582912 Dec  4 07:21 ibdata1
+-rw-rw----. 1 999 999 50331648 Dec  4 07:21 ib_logfile0
+-rw-rw----. 1 999 999 50331648 Dec  4 07:21 ib_logfile1
+-rw-rw----. 1 999 999 12582912 Dec  4 07:21 ibtmp1
+-rw-rw----. 1 999 999        0 Dec  4 07:21 multi-master.info
+drwx------. 2 999 999     4096 Dec  4 07:21 mysql
+drwx------. 2 999 999     4096 Dec  4 07:21 performance_schema
+-rw-rw----. 1 999 999    24576 Dec  4 07:21 tc.log
+```
+
+- Delete the container and start a new one using the same persistent storage
+There is no needs to provide environment variables to create a database and user
+
+```
+docker rm -f mariadb
+
+docker run -d --name mariadb \
+   -v /data/mysql:/var/lib/mysql \
+   mariadb
+```
+
+You may see the following output:
+
+```
+[vagrant@node1 ~]$ docker run -d --name mariadb \
+>    -v /data/mysql:/var/lib/mysql \
+>    mariadb
+793577d26bb5ad72577dc6815f97a1243c73c478d98c2c7ce8ee87daf0e5b654
+
+
+[vagrant@node1 ~]$ docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
+793577d26bb5        mariadb             "docker-entrypoint..."   1 second ago        Up 1 second         3306/tcp            mariadb
+
+
+
+[vagrant@node1 ~]$ docker exec -it mariadb mysql -udbuser -pdbpassword -h127.0.0.1 -e 'show databases;' exampledb
++--------------------+
+| Database           |
++--------------------+
+| exampledb          |
+| information_schema |
++--------------------+
+```
+
+- Delete all containers
+
+```
+docker rm -f $(docker ps -aq)
+```
