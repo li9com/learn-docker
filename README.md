@@ -17,6 +17,7 @@ Lab 5  | Managing containers
 Lab 6  | Using environment variables
 Lab 7  | Using persistent storage
 Lab 8  | Starting multicontainer applications
+Lab 9  | Starting private registry
 
 
 ## Creating lab environment
