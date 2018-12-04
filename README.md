@@ -1,4 +1,4 @@
-# learn-docker
+# Learn Docker
 "Learn Docker" is is a step by step hands-on guide which gives some practical Docker-related examples
 
 
