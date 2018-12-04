@@ -568,7 +568,7 @@ man docker-run
   -P, --publish-all                           Publish all exposed ports to random ports
 ```
 
-- Start a new httpd container and bind it to port 8080 of the Docker node:
+- Start a new httpd container and bind it to port 8080 of the Docker node
 
 ```
 [vagrant@node1 ~]$ docker run -d --name httpd -p 8080:80 httpd
@@ -576,6 +576,8 @@ man docker-run
 ```
 
 - Make sure that "docker ps" output show port binding
+
+```
 [vagrant@node1 ~]$ docker ps
 CONTAINER ID        IMAGE               COMMAND              CREATED             STATUS              PORTS                  NAMES
 67f530ea1da8        httpd               "httpd-foreground"   1 second ago        Up 1 second         0.0.0.0:8080->80/tcp   httpd
