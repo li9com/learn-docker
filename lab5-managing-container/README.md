@@ -246,7 +246,311 @@ e22a2da30a1f	httpd
 
 ## Gathering container details
 
+- Check the "docker-inspecr" man page
 
+```
+man docker-inspect
+```
+
+- Start a new container named myhttpd
+
+```
+[vagrant@node1 learn-docker]$ docker run -d --name myhttpd httpd
+49fc9eb92d3d3802c62b2218197b8e375b6c56457ad4337d66590d861b282a64
+```
+
+- Inspect container details using "docker inspect"
+
+```
+[vagrant@node1 ~]$ docker inspect myhttpd
+[
+    {
+        "Id": "49fc9eb92d3d3802c62b2218197b8e375b6c56457ad4337d66590d861b282a64",
+        "Created": "2018-12-04T02:51:07.463795846Z",
+        "Path": "httpd-foreground",
+        "Args": [],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 29514,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2018-12-04T02:51:07.781316387Z",
+            "FinishedAt": "0001-01-01T00:00:00Z"
+        },
+        "Image": "sha256:2a51bb06dc8baa17b4d78b7ca0d87f5aadbd98d711817dbbf2cfe49211556c30",
+        "ResolvConfPath": "/var/lib/docker/containers/49fc9eb92d3d3802c62b2218197b8e375b6c56457ad4337d66590d861b282a64/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/49fc9eb92d3d3802c62b2218197b8e375b6c56457ad4337d66590d861b282a64/hostname",
+        "HostsPath": "/var/lib/docker/containers/49fc9eb92d3d3802c62b2218197b8e375b6c56457ad4337d66590d861b282a64/hosts",
+        "LogPath": "",
+        "Name": "/myhttpd",
+        "RestartCount": 0,
+        "Driver": "overlay2",
+        "MountLabel": "system_u:object_r:svirt_sandbox_file_t:s0:c516,c811",
+        "ProcessLabel": "system_u:system_r:svirt_lxc_net_t:s0:c516,c811",
+        "AppArmorProfile": "",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": null,
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "journald",
+                "Config": {}
+            },
+            "NetworkMode": "default",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "CapAdd": null,
+            "CapDrop": null,
+            "Dns": [],
+            "DnsOptions": [],
+            "DnsSearch": [],
+            "ExtraHosts": null,
+            "GroupAdd": null,
+            "IpcMode": "",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "docker-runc",
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": null,
+            "BlkioDeviceReadBps": null,
+            "BlkioDeviceWriteBps": null,
+            "BlkioDeviceReadIOps": null,
+            "BlkioDeviceWriteIOps": null,
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": [],
+            "DiskQuota": 0,
+            "KernelMemory": 0,
+            "MemoryReservation": 0,
+            "MemorySwap": 0,
+            "MemorySwappiness": -1,
+            "OomKillDisable": false,
+            "PidsLimit": 0,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0
+        },
+        "GraphDriver": {
+            "Name": "overlay2",
+            "Data": {
+                "LowerDir": "/var/lib/docker/overlay2/cf9efb4e21f3dca86311f31b202bc709aa5dd1c9d22dec9d859fa12eb919f5e8-init/diff:/var/lib/docker/overlay2/ae68f49495f6b1477c8a580fb3d857d2c5edded9b3c174c23ae57d2f7caba594/diff:/var/lib/docker/overlay2/079541c6385f059d768db79d8e8696a1cdb16e6f2900c78377721757c2c836ef/diff:/var/lib/docker/overlay2/634de8e180bf2d52a0e858edca10353c34a10cb18b2d1569afcd377d6fe65530/diff:/var/lib/docker/overlay2/3e448cd1768ff13d1b9dd1c55ccded60716a9b0c58f4291fe8b375b26b281fdd/diff:/var/lib/docker/overlay2/d380e9df243a0883fe04d453f6f901a26b2de4cd6c4b83734ef6b22cd1234e00/diff",
+                "MergedDir": "/var/lib/docker/overlay2/cf9efb4e21f3dca86311f31b202bc709aa5dd1c9d22dec9d859fa12eb919f5e8/merged",
+                "UpperDir": "/var/lib/docker/overlay2/cf9efb4e21f3dca86311f31b202bc709aa5dd1c9d22dec9d859fa12eb919f5e8/diff",
+                "WorkDir": "/var/lib/docker/overlay2/cf9efb4e21f3dca86311f31b202bc709aa5dd1c9d22dec9d859fa12eb919f5e8/work"
+            }
+        },
+        "Mounts": [],
+        "Config": {
+            "Hostname": "49fc9eb92d3d",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "80/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/apache2/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "HTTPD_PREFIX=/usr/local/apache2",
+                "HTTPD_VERSION=2.4.37",
+                "HTTPD_SHA256=3498dc5c6772fac2eb7307dc7963122ffe243b5e806e0be4fb51974ff759d726",
+                "HTTPD_PATCHES=",
+                "APACHE_DIST_URLS=https://www.apache.org/dyn/closer.cgi?action=download&filename= \thttps://www-us.apache.org/dist/ \thttps://www.apache.org/dist/ \thttps://archive.apache.org/dist/"
+            ],
+            "Cmd": [
+                "httpd-foreground"
+            ],
+            "ArgsEscaped": true,
+            "Image": "httpd",
+            "Volumes": null,
+            "WorkingDir": "/usr/local/apache2",
+            "Entrypoint": null,
+            "OnBuild": null,
+            "Labels": {}
+        },
+        "NetworkSettings": {
+            "Bridge": "",
+            "SandboxID": "9a42c357bb63df5a98de2ce218fb62b89cf845f3ed61cfdac57c7621d7731880",
+            "HairpinMode": false,
+            "LinkLocalIPv6Address": "",
+            "LinkLocalIPv6PrefixLen": 0,
+            "Ports": {
+                "80/tcp": null
+            },
+            "SandboxKey": "/var/run/docker/netns/9a42c357bb63",
+            "SecondaryIPAddresses": null,
+            "SecondaryIPv6Addresses": null,
+            "EndpointID": "c74ad7358d6d94de0d1c01b914f4ce5cbc953b72f126e018693c321d7e7e87b5",
+            "Gateway": "172.17.0.1",
+            "GlobalIPv6Address": "",
+            "GlobalIPv6PrefixLen": 0,
+            "IPAddress": "172.17.0.5",
+            "IPPrefixLen": 16,
+            "IPv6Gateway": "",
+            "MacAddress": "02:42:ac:11:00:05",
+            "Networks": {
+                "bridge": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": null,
+                    "NetworkID": "5aab0cda8cae26003f2dddc79bd219fc0bf117e18ecae54cc9d7cbc8bfb878d0",
+                    "EndpointID": "c74ad7358d6d94de0d1c01b914f4ce5cbc953b72f126e018693c321d7e7e87b5",
+                    "Gateway": "172.17.0.1",
+                    "IPAddress": "172.17.0.5",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "MacAddress": "02:42:ac:11:00:05"
+                }
+            }
+        }
+    }
+]
+```
+
+- Customize docker inspect output to show IP Address only
+
+```
+[vagrant@node1 ~]$ docker inspect --format '{{.NetworkSettings.IPAddress}}' myhttpd
+172.17.0.5
+```
+
+- Customize output to gather container network ports
+
+```
+[vagrant@node1 ~]$ docker inspect --format '{{.NetworkSettings.Ports}}' myhttpd
+map[80/tcp:[]]
+```
+
+- Try to access containerized application
+
+```
+[vagrant@node1 ~]$ curl  http://172.17.0.5
+<html><body><h1>It works!</h1></body></html>
+```
+
+Note! We started a httpd container which is Apache web server. It is expected that the application answer is "It works"
+
+
+## Deleting containers
+
+- Check the "dicker-rm" man page
+
+```
+man docker-rm
+```
+
+Note! By default, the "docker rm" command deletes only stopped containers. If you need to delete a running container, option "-f" is required.
+
+- Try to delete stopped conainers
+
+```
+[vagrant@node1 ~]$ docker ps -a
+CONTAINER ID        IMAGE               COMMAND              CREATED             STATUS                         PORTS               NAMES
+49fc9eb92d3d        httpd               "httpd-foreground"   30 minutes ago      Up 30 minutes                  80/tcp              myhttpd
+c10f2a6e7b25        httpd               "httpd-foreground"   About an hour ago   Up About an hour               80/tcp              it_works_container
+0fc05b1bb9c4        httpd               "httpd-foreground"   About an hour ago   Up About an hour               80/tcp              my_custom_name
+e22a2da30a1f        httpd               "httpd-foreground"   About an hour ago   Up About an hour               80/tcp              hungry_gates
+33f8a4d3b6e5        httpd               "httpd-foreground"   About an hour ago   Exited (0) About an hour ago                       sleepy_bassi
+
+
+[vagrant@node1 ~]$ docker rm 33f8a4d3b6e5
+33f8a4d3b6e5
+
+
+[vagrant@node1 ~]$ docker ps -a
+CONTAINER ID        IMAGE               COMMAND              CREATED             STATUS              PORTS               NAMES
+49fc9eb92d3d        httpd               "httpd-foreground"   30 minutes ago      Up 30 minutes       80/tcp              myhttpd
+c10f2a6e7b25        httpd               "httpd-foreground"   About an hour ago   Up About an hour    80/tcp              it_works_container
+0fc05b1bb9c4        httpd               "httpd-foreground"   About an hour ago   Up About an hour    80/tcp              my_custom_name
+e22a2da30a1f        httpd               "httpd-foreground"   About an hour ago   Up About an hour    80/tcp              hungry_gates
+```
+
+- Try to delete a running container
+
+```
+[vagrant@node1 ~]$ docker ps
+CONTAINER ID        IMAGE               COMMAND              CREATED             STATUS              PORTS               NAMES
+49fc9eb92d3d        httpd               "httpd-foreground"   31 minutes ago      Up 31 minutes       80/tcp              myhttpd
+c10f2a6e7b25        httpd               "httpd-foreground"   About an hour ago   Up About an hour    80/tcp              it_works_container
+0fc05b1bb9c4        httpd               "httpd-foreground"   About an hour ago   Up About an hour    80/tcp              my_custom_name
+e22a2da30a1f        httpd               "httpd-foreground"   About an hour ago   Up About an hour    80/tcp              hungry_gates
+
+[vagrant@node1 ~]$ docker rm myhttpd
+Error response from daemon: You cannot remove a running container 49fc9eb92d3d3802c62b2218197b8e375b6c56457ad4337d66590d861b282a64. Stop the container before attempting removal or use -f
+```
+
+- Try again with "-f"
+
+```
+[vagrant@node1 ~]$ docker rm -f myhttpd
+myhttpd
+
+
+[vagrant@node1 ~]$ docker ps -a
+CONTAINER ID        IMAGE               COMMAND              CREATED             STATUS              PORTS               NAMES
+c10f2a6e7b25        httpd               "httpd-foreground"   About an hour ago   Up About an hour    80/tcp              it_works_container
+0fc05b1bb9c4        httpd               "httpd-foreground"   About an hour ago   Up About an hour    80/tcp              my_custom_name
+e22a2da30a1f        httpd               "httpd-foreground"   About an hour ago   Up About an hour    80/tcp              hungry_gates
+```
+
+Note! Container has been succesfully deleted
+
+- Delete all containers
+
+```
+[vagrant@node1 ~]$ docker rm -f $(docker ps -aq)
+c10f2a6e7b25
+0fc05b1bb9c4
+e22a2da30a1f
+[vagrant@node1 ~]$ docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+[vagrant@node1 ~]$
+```
+
+Note! We will use this to clean the system
 
 ## Exposing containers
+
+
 
