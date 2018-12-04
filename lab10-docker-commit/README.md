@@ -15,7 +15,7 @@ docker run -it centos:7 /bin/bash -c 'yum install -y httpd; yum clean all; echo 
 ```
 - Make sure that container is stopped
 ```
-[vagrant@node1 learn-docker]$ docker ps -a
+[vagrant@node1 ~]$ docker ps -a
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                     PORTS               NAMES
 d89efebc98e5        centos:7            "/bin/bash -c 'yum..."   44 seconds ago      Exited (0) 7 seconds ago                       modest_ptolemy
 ```
@@ -23,7 +23,7 @@ d89efebc98e5        centos:7            "/bin/bash -c 'yum..."   44 seconds ago 
 - "Convert" container to a docker images by using "docker commit"
 
 ```
-[vagrant@node1 learn-docker]$ docker commit -c "CMD /usr/sbin/httpd -DFOREGROUND" d89efebc98e5 myhttpd
+[vagrant@node1 ~]$ docker commit -c "CMD /usr/sbin/httpd -DFOREGROUND" d89efebc98e5 myhttpd
 sha256:82656d2150f8676a87875858608ada30fd5a478f79f7a9fc9cd5a999edf24dd9
 
 [vagrant@node1 learn-docker]$ docker images myhttpd
