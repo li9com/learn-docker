@@ -65,3 +65,14 @@ man docker-run
 ```
 man docker-ps
 ```
+
+
+## --help
+Each docker subcommand has a builtin documentation. You may acces the documentation as follows:
+
+```
+docker --help
+docker info --help
+docker run --help
+docker ps --help
+```
