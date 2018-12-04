@@ -14,6 +14,9 @@ Lab 2  | Docker basic configuration
 Lab 3  | Getting help
 Lab 4  | Manaing images
 Lab 5  | Managing containers
+Lab 6  | Using environment variables
+Lab 7  | Using persistent storage
+Lab 8  | Starting multicontainer applications
 
 
 ## Creating lab environment
