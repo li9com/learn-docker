@@ -690,4 +690,116 @@ Note! You need to access the service from your Vagrant host and not inside the V
 
 Note! You should see the default Jenkins configration page named "Getting Started"
 
+- Once you are done, delete all containers
+
+```
+docker rm -f $(docker ps -aq)
+```
+
+## Executing a custom command inside a conainer
+You may execute override command/application started once container is run. 
+This is achieved by passing an argument like shown below
+
+```
+docker run IMAGE COMMAND
+```
+
+You may also connect to a running container's shell using "docker exec"
+
+```
+docker exec -it IMAGE COMMAND
+```
+
+More information is available in the man page
+
+```
+man docker-exec
+```
+
+- Start a httpd container with /bin/sh
+
+```
+[vagrant@node1 ~]$ docker run -it httpd /bin/sh
+# ls
+bin  build  cgi-bin  conf  error  htdocs  icons  include  logs	modules
+# whoami
+root
+# exit
+
+
+
+[vagrant@node1 ~]$ docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                     PORTS               NAMES
+f24b48002cce        httpd               "/bin/sh"           24 seconds ago      Exited (0) 2 seconds ago                       jovial_aryabhata
+```
+
+- Start a new httpd container
+
+```
+[vagrant@node1 ~]$ docker run -d --name httpd httpd
+9335837758fd7b1682929318307c9f75305549c6a06fd2252e9264aa575de50d
+
+[vagrant@node1 ~]$ docker ps
+CONTAINER ID        IMAGE               COMMAND              CREATED             STATUS              PORTS               NAMES
+9335837758fd        httpd               "httpd-foreground"   2 seconds ago       Up 1 second         80/tcp              httpd
+```
+Note! the container starts normally
+
+- Check environment variables inside the container using the "env" command
+
+```
+[vagrant@node1 ~]$ docker exec httpd env
+PATH=/usr/local/apache2/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+HOSTNAME=9335837758fd
+HTTPD_PREFIX=/usr/local/apache2
+HTTPD_VERSION=2.4.37
+HTTPD_SHA256=3498dc5c6772fac2eb7307dc7963122ffe243b5e806e0be4fb51974ff759d726
+HTTPD_PATCHES=
+APACHE_DIST_URLS=https://www.apache.org/dyn/closer.cgi?action=download&filename=        https://www-us.apache.org/dist/         https://www.apache.org/dist/    https://archive.apache.org/dist/
+HOME=/root
+```
+
+Note! if you see the following message
+
+```
+[vagrant@node1 ~]$ docker exec httpd env
+rpc error: code = 2 desc = oci runtime error: exec failed: container_linux.go:247: starting container process caused "process_linux.go:110: decoding init error from pipe caused \"read parent: connection reset by peer\""
+```
+
+you need to downgrade docker to the previous version as follows
+
+```
+sudo yum downgrade docker docker-client docker-common
+sudo systemctl restart docker
+```
+
+- Connect to httpd container console and modify index.html
+
+```
+[vagrant@node1 ~]$ docker exec -it httpd /bin/bash
+root@9335837758fd:/usr/local/apache2# ls
+bin  build  cgi-bin  conf  error  htdocs  icons  include  logs	modules
+root@9335837758fd:/usr/local/apache2# whoami
+root
+root@9335837758fd:/usr/local/apache2# cat htdocs/index.html
+<html><body><h1>It works!</h1></body></html>
+root@9335837758fd:/usr/local/apache2# echo "It has been changed" >htdocs/index.html
+root@9335837758fd:/usr/local/apache2# exit
+```
+
+- Make sure that application answer has been changed
+
+```
+[vagrant@node1 ~]$ docker inspect --format='{{ .NetworkSettings.IPAddress }}' httpd
+172.17.0.2
+
+[vagrant@node1 ~]$ curl 172.17.0.2
+It has been changed
+```
+
+- Remove all containers
+
+```
+docker rm -f $(docker ps -aq)
+```
 
