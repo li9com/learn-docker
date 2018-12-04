@@ -552,5 +552,140 @@ Note! We will use this to clean the system
 
 ## Exposing containers
 
+By default, containers use an internal network which is not accessible outside of the Docker node.  Container port may be bound to a Docker node port using "-p" option of the "docker run".
+
+- Check the "docker-run" man page. Look for -p, or "--publish" option
+
+```
+man docker-run
+```
+
+- Check builtin documentation
+
+```
+[vagrant@node1 ~]$ docker run --help|grep publish
+  -p, --publish list                          Publish a container's port(s) to the host (default [])
+  -P, --publish-all                           Publish all exposed ports to random ports
+```
+
+- Start a new httpd container and bind it to port 8080 of the Docker node:
+
+```
+[vagrant@node1 ~]$ docker run -d --name httpd -p 8080:80 httpd
+67f530ea1da86d655be870c91cedd0646bd037594884686028ce62a89cecc508
+```
+
+- Make sure that "docker ps" output show port binding
+[vagrant@node1 ~]$ docker ps
+CONTAINER ID        IMAGE               COMMAND              CREATED             STATUS              PORTS                  NAMES
+67f530ea1da8        httpd               "httpd-foreground"   1 second ago        Up 1 second         0.0.0.0:8080->80/tcp   httpd
+```
+
+- Access containerized application using Node IP address:
+
+```
+[vagrant@node1 ~]$ ip a
+<OMITTED>
+3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 08:00:27:1d:b7:b2 brd ff:ff:ff:ff:ff:ff
+    inet 172.24.0.11/24 brd 172.24.0.255 scope global noprefixroute eth1
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fe1d:b7b2/64 scope link
+       valid_lft forever preferred_lft forever
+4: docker0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default
+    link/ether 02:42:6b:f1:5e:9b brd ff:ff:ff:ff:ff:ff
+    inet 172.17.0.1/16 scope global docker0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::42:6bff:fef1:5e9b/64 scope link
+       valid_lft forever preferred_lft forever
+<OMITTED>
+
+[vagrant@node1 ~]$ curl http://127.0.0.1:8080
+<html><body><h1>It works!</h1></body></html>
+
+[vagrant@node1 ~]$ curl http://172.24.0.11:8080
+<html><body><h1>It works!</h1></body></html>
+```
+
+Note! Application is accessible from the Docker Node using its IP addresses.
+
+- Try to start a new httpd container and bind it to the same Docker node port.
+
+```
+[vagrant@node1 ~]$ docker run -d --name new_httpd -p 8080:80 httpd
+bd43103ece1e307d0f33d0178b5bae69177b5cfeb4b89e446e648dc38b02166b
+/usr/bin/docker-current: Error response from daemon: driver failed programming external connectivity on endpoint new_httpd (b9742c948d67ca546db0b78ba7d24cf4507a5b83d3eefb28903d1c6aa948138b): Bind for 0.0.0.0:8080 failed: port is already allocated.
+```
+
+Note! it is expected that command show the error
+
+- Check running containers. Make sure that only one container is bound to port 8080 of the Docker node
+
+```
+[vagrant@node1 ~]$ docker ps -a
+CONTAINER ID        IMAGE               COMMAND              CREATED             STATUS              PORTS                  NAMES
+bd43103ece1e        httpd               "httpd-foreground"   49 seconds ago      Created                                    new_httpd
+67f530ea1da8        httpd               "httpd-foreground"   3 minutes ago       Up 3 minutes        0.0.0.0:8080->80/tcp   httpd
+```
+
+- Delete all containers
+
+```
+docker rm -f $(docker ps -aq)
+```
+
+- Start a new Jenkins container and bind it to port 8080 of the Docker node
+
+```
+[vagrant@node1 ~]$ docker run -d --name jenkins -p 8080:8080 jenkins
+Unable to find image 'jenkins:latest' locally
+Trying to pull repository docker.io/library/jenkins ...
+latest: Pulling from docker.io/library/jenkins
+55cbf04beb70: Pull complete
+1607093a898c: Pull complete
+9a8ea045c926: Pull complete
+d4eee24d4dac: Pull complete
+c58988e753d7: Pull complete
+794a04897db9: Pull complete
+70fcfa476f73: Pull complete
+0539c80a02be: Pull complete
+54fefc6dcf80: Pull complete
+911bc90e47a8: Pull complete
+38430d93efed: Pull complete
+7e46ccda148a: Pull complete
+c0cbcb5ac747: Pull complete
+35ade7a86a8e: Pull complete
+aa433a6a56b1: Pull complete
+841c1dd38d62: Pull complete
+b865dcb08714: Pull complete
+5a3779030005: Pull complete
+12b47c68955c: Pull complete
+1322ea3e7bfd: Pull complete
+Digest: sha256:eeb4850eb65f2d92500e421b430ed1ec58a7ac909e91f518926e02473904f668
+Status: Downloaded newer image for docker.io/jenkins:latest
+811822122df6387146f3aa8778e81464467e158e70d28357f90b659a78e49459
+[vagrant@node1 ~]$ docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                               NAMES
+811822122df6        jenkins             "/bin/tini -- /usr..."   14 seconds ago      Up 13 seconds       0.0.0.0:8080->8080/tcp, 50000/tcp   jenkins
+```
+
+Note! Make sure that docker run automatically downloaded the jenkins image
+Note! jenkins container listens on port 8080
+
+- Try to access Jenkins appliation from your workstation by opening the following URL
+
+```
+http://node1.172.24.0.11.nip.io:8080
+```
+
+or
+
+```
+http://172.24.0.11:8080
+```
+
+Note! You need to access the service from your Vagrant host and not inside the VM
+
+Note! You should see the default Jenkins configration page named "Getting Started"
 
 
