@@ -68,6 +68,12 @@ Once VM is provisioned, you may connect to VM using SSH as follows:
 vagrant ssh
 ```
 
+Note! You will be connected as the "vagrant" user which is allowed to use sudo to run commands under the root account:
+
+```
+sudo yum install -y epel-release
+```
+
 
 ## Authors
 Artemii Kropachev
