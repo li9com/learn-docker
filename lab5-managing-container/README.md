@@ -121,7 +121,7 @@ docker stop hungry_gates
 
 - Make sure that container was stoped
 
-````
+```
 [vagrant@node1 ~]$ docker ps
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 
