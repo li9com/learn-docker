@@ -1,6 +1,6 @@
 # Lab1 - Docker installation
-This document explains how to install Docker on a CentOS 7 machine.
-The lab environment comes with Docker pre-installed and in most cases you do not need to implement this scenario. However, if you use an external node, you may need to install Docker packages and start the docker service.
+This document explains how to install Docker on a CentOS 7 VM.
+The lab environment comes with Docker pre-installed and in most cases you do not need to implement this scenario. However, if you use your own VM, you would need to install Docker packages and start the docker service.
 
 ## Installation
 - Install the "docker" package as follows:
@@ -15,7 +15,7 @@ sudo yum install docker -y
 ```
 sudo systemctl enable --now docker
 ```
-Note! This command starts the docker service and enables it on boot
+Note! This command starts the docker service and enables it to start on boot
 
 ## Verification
 - Check the docker service status as follows:
@@ -24,7 +24,7 @@ Note! This command starts the docker service and enables it on boot
 sudo systemctl status docker
 ```
 
-You showd have have a similar ouput:
+You showd have a similar ouput:
 
 ```
 ● docker.service - Docker Application Container Engine

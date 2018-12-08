@@ -1,5 +1,5 @@
 # Lab4 - Managing Docker images
-This document guide you on how to manage Docker images via the "docker" utility
+This document will guide you on how to manage Docker images via the "docker" utility
 
 ## Searching images
 
@@ -13,7 +13,7 @@ Note! This part of the lab is peformed on your workstation and not inside the VM
 You should be able to see a list of mariadb-related images
 
 - Click on the "> DETAILS" link on the right
-- Scroll down the documenation
+- Scroll down trough the documenation
 
 ### docker search
 - Check the "docker-search" man page
@@ -122,7 +122,7 @@ Digest: sha256:9784d70c8ea466fabd52b0bc8cde84980324f9612380d22fbad2151df9a430eb
 Status: Downloaded newer image for docker.io/httpd:2.2
 ```
 
-- Make sure that both images exist locally:
+- Make sure that both images do exist locally:
 
 ```
 [vagrant@node1 ~]$ docker images

@@ -1,4 +1,4 @@
-# Lab10 - Creating new images by docker commit
+# Lab10 - Creating new images with docker commit
 
 ## docker commit
 - Check the "docker-commit" man page
