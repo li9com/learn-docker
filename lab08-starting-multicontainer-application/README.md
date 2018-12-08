@@ -55,7 +55,7 @@ docker pull wordress
 map[/var/www/html:{}]
 ```
 
-Note! We need to mount a volume to /var/www/html
+Note! We need to mount a volume to /var/www/html.
 
 - Configure WordPress persistent storage
 

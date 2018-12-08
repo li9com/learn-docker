@@ -21,7 +21,7 @@ man docker-import
 man docker-export
 ```
 
-Note! We will be using the commands to import and export container layers
+Note! We will be using the commands to import and export container layers.
 
 - Start and modify a conftainer from the httpd image
 
@@ -49,7 +49,7 @@ REPOSITORY          TAG                 IMAGE ID            CREATED             
 newimage            latest              174a538aa225        51 seconds ago      128 MB
 ```
 
-Note! This image is useless for now. We will learn how to improve it a bit later
+Note! This image is useless for now. We will learn how to improve it a bit later.
 
 
 ## Echo container image

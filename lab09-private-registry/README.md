@@ -27,7 +27,7 @@ docker pull registry:2
 map[/var/lib/registry:{}]
 ```
 
-Note! We need to mount persistent data tp /var/lib/registry
+Note! We need to mount persistent data tp /var/lib/registry.
 
 - Start registry container with the following configuration
 

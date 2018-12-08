@@ -34,8 +34,9 @@ AH00558: httpd: Could not reliably determine the server's fully qualified domain
 ^C[Tue Dec 04 01:27:01.856785 2018] [mpm_event:notice] [pid 1:tid 140240398247104] AH00491: caught SIGTERM, shutting down
 ```
 
-Note! The container shows output to the screen
-Note! You need to stop container using "CTRL + C"
+Note! The container shows output to the screen.
+
+Note! You need to stop container using "CTRL + C".
 
 - Make sure that container is not up and running
 
@@ -48,7 +49,7 @@ CONTAINER ID        IMAGE               COMMAND              CREATED            
 33f8a4d3b6e5        httpd               "httpd-foreground"   About a minute ago   Exited (0) About a minute ago                       sleepy_bassi
 ```
 
-Note! the "docker ps -a" shows status of all contianers including stopped
+Note! The "docker ps -a" shows status of all contianers including stopped.
 
 - Start a new httpd container in background:
 
@@ -93,7 +94,7 @@ e22a2da30a1f        httpd               "httpd-foreground"   2 minutes ago      
 33f8a4d3b6e5        httpd               "httpd-foreground"   5 minutes ago       Exited (0) 5 minutes ago                       sleepy_bassi
 ```
 
-Note! You should not see any new containers
+Note! You should not see any new containers.
 
 ## Stopping/starting existing containers
 - Check the man pages for "docker-stop" and "docker-start"
@@ -113,7 +114,7 @@ e22a2da30a1f        httpd               "httpd-foreground"   3 minutes ago      
 e22a2da30a1f
 ```
 
-Note!  You may use container ID or container name. It is up to you. We could stop the container as follows:
+Note! You may use container ID or container name. It is up to you. We could stop the container as follows:
 
 ```
 docker stop hungry_gates
@@ -132,7 +133,7 @@ e22a2da30a1f        httpd               "httpd-foreground"   4 minutes ago      
 33f8a4d3b6e5        httpd               "httpd-foreground"   7 minutes ago       Exited (0) 7 minutes ago                       sleepy_bassi
 ```
 
-Note! "docker ps" should not show the container you stopped
+Note! "docker ps" should not show the container you stopped.
 
 - Start the container again
 
@@ -189,6 +190,7 @@ e22a2da30a1f        httpd               "httpd-foreground"   14 minutes ago     
 
 
 ## Listing running and stopped containers
+
 Note! We already used "docker ps" to list running and stopped containers. In this chapter we will learn how to use advanced docker ps functionallity.
 
 - Check the "docker-ps" man page
@@ -225,7 +227,7 @@ e22a2da30a1f
 33f8a4d3b6e5
 ```
 
-Note! We will be using this command a lot in the next labs
+Note! We will be using this command a lot in the next labs.
 
 - Apply an output filter using -f option
 
@@ -262,7 +264,7 @@ man docker-inspect
 - Inspect container details using "docker inspect"
 
 ```
-[vagrant@node1 ~]$  | jq '.'
+[vagrant@node1 ~]$ docker inspect myhttpd | jq '.'
 [
     {
         "Id": "49fc9eb92d3d3802c62b2218197b8e375b6c56457ad4337d66590d861b282a64",
@@ -470,7 +472,8 @@ map[80/tcp:[]]
 ```
 
 This is useful in scripts.
-Note! We started a httpd container which is Apache web server. It is expected that the application answer is "It works"
+
+Note! We started a httpd container which is Apache web server. It is expected that the application answer is "It works".
 
 
 ## Deleting containers
@@ -535,7 +538,7 @@ c10f2a6e7b25        httpd               "httpd-foreground"   About an hour ago  
 e22a2da30a1f        httpd               "httpd-foreground"   About an hour ago   Up About an hour    80/tcp              hungry_gates
 ```
 
-Note! Container has been succesfully deleted
+Note! Container has been succesfully deleted.
 
 - Delete all containers
 
@@ -549,7 +552,7 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 [vagrant@node1 ~]$
 ```
 
-Note! We will use this command often to clean the system
+Note! We will use this command often to clean the system.
 
 ## Exposing container ports on the node
 
@@ -620,7 +623,7 @@ bd43103ece1e307d0f33d0178b5bae69177b5cfeb4b89e446e648dc38b02166b
 /usr/bin/docker-current: Error response from daemon: driver failed programming external connectivity on endpoint new_httpd (b9742c948d67ca546db0b78ba7d24cf4507a5b83d3eefb28903d1c6aa948138b): Bind for 0.0.0.0:8080 failed: port is already allocated.
 ```
 
-Note! it is expected that command show the error
+Note! It is expected that command show the error.
 
 - Check running containers. Make sure that only one container is bound to port 8080 of the Docker node
 
@@ -672,8 +675,9 @@ CONTAINER ID        IMAGE               COMMAND                  CREATED        
 811822122df6        jenkins             "/bin/tini -- /usr..."   14 seconds ago      Up 13 seconds       0.0.0.0:8080->8080/tcp, 50000/tcp   jenkins
 ```
 
-Note! Make sure that docker run automatically downloaded the jenkins image
-Note! jenkins container listens on port 8080
+Note! Make sure that docker run automatically downloaded the jenkins image.
+
+Note! Jenkins container listens on port 8080.
 
 - Try to access Jenkins appliation from your workstation by opening the following URL
 
@@ -687,9 +691,9 @@ or
 http://172.24.0.11:8080
 ```
 
-Note! You need to access the service from your Vagrant host and not from inside the VM
+Note! You need to access the service from your Vagrant host and not from inside the VM.
 
-Note! You should see the default Jenkins configration page named "Getting Started"
+Note! You should see the default Jenkins configration page named "Getting Started".
 
 - Once you are done, delete all containers
 
@@ -698,7 +702,7 @@ docker rm -f $(docker ps -aq)
 ```
 
 ## Executing custom commands inside a conainer
-You may override the default command (application) started once a container is run. 
+You may override the default command (application) started once a container is run.
 This is achieved by passing a *COMMAND* argument like shown below
 
 ```
@@ -744,7 +748,8 @@ f24b48002cce        httpd               "/bin/sh"           24 seconds ago      
 CONTAINER ID        IMAGE               COMMAND              CREATED             STATUS              PORTS               NAMES
 9335837758fd        httpd               "httpd-foreground"   2 seconds ago       Up 1 second         80/tcp              httpd
 ```
-Note! the container starts normally
+
+Note! The container starts normally.
 
 - Check environment variables inside the container using the "env" command
 
@@ -760,14 +765,14 @@ APACHE_DIST_URLS=https://www.apache.org/dyn/closer.cgi?action=download&filename=
 HOME=/root
 ```
 
-Note! if you see the following message
+Note! If you see the following message:
 
 ```
 [vagrant@node1 ~]$ docker exec httpd env
 rpc error: code = 2 desc = oci runtime error: exec failed: container_linux.go:247: starting container process caused "process_linux.go:110: decoding init error from pipe caused \"read parent: connection reset by peer\""
 ```
 
-you need to downgrade docker to the previous version as follows
+, you need to downgrade docker to the previous version as follows:
 
 ```
 sudo yum downgrade docker docker-client docker-common

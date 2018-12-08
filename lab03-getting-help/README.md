@@ -46,7 +46,7 @@ fi
 man docker
 ```
 
-Note! please focus on the subcommands. You may read a man page by "man docker-SUBCOMMAND"
+Note! Please focus on the subcommands. You may read a man page by "man docker-SUBCOMMAND".
 
 - Check the man page for "docker info"
 
@@ -56,9 +56,9 @@ man docker-info
 
 - Check the man page for "docker run"
 
-``` 
+```
 man docker-run
-``` 
+```
 
 - Check the "docker ps" man page
 

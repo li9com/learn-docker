@@ -21,7 +21,8 @@ sudo yum install git vim jq -y
 ```
 sudo systemctl enable --now docker
 ```
-Note! This command starts the docker service and enables it to start on boot
+
+Note! This command starts the docker service and enables it to start on boot.
 
 ## Verification
 - Check the docker service status as follows:

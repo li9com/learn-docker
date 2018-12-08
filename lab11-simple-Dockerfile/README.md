@@ -25,7 +25,7 @@ Step 3/3 : CMD /usr/sbin/httpd -DFOREGROUND
 Successfully built 8710b43c848d
 ```
 
-Note! your output maybe different. The output above contains cached data to redunce number of lines
+Note! Your output maybe different. The output above contains cached data to redunce number of lines.
 
 - Make sure that images exists
 

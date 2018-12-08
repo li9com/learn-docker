@@ -19,7 +19,7 @@ The image name is httpd-24-centos7
 docker pull docker.io/centos/httpd-24-centos7
 ```
 
-- Start an httpd container to make sure that it works  
+- Start an httpd container to make sure that it works
 
 ```
 [vagrant@node1 ~]$ docker run -d --name httpd -p 8080:8080 docker.io/centos/httpd-24-centos7
@@ -240,7 +240,7 @@ docker rm -f $(docker ps -aq)
 ]
 ```
 
-Note! it looks like persistent storage should be under standard RHEL Apache directory /var/www/html
+Note! It looks like persistent storage should be under standard RHEL Apache directory */var/www/html*.
 
 - Create a persistent storage for Apache container
 
@@ -252,7 +252,7 @@ sudo chown g+s /data/apache
 sudo sh -c 'echo "Custom page" > /data/apache/index.html'
 ```
 
-Note! We created a custom index.html. This should be used by new apache container
+Note! We created a custom index.html. This should be used by new apache container.
 
 - Start 3  apache containers using persistent strage
 
@@ -333,9 +333,9 @@ docker rm -f $(docker ps -aq)
 ```
 [vagrant@node1 learn-docker]$ docker inspect --format='{{ .Config.Volumes }}' mariadb
 map[/var/lib/mysql:{}]
-``` 
+```
 
-Note! it looks like /var/lib/mysql should be used for persistent storage
+Note! It looks like /var/lib/mysql should be used for persistent storage.
 
 - Configure mariadb persistent storage
 
@@ -344,7 +344,7 @@ sudo mkdir -p /data/mysql
 sudo chcon -t container_file_t /data/mysql
 ```
 
-- Start a mariadb container 
+- Start a mariadb container
 
 ```
 docker run -d --name mariadb \

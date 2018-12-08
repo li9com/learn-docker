@@ -29,7 +29,7 @@ Status: Downloaded newer image for docker.io/mariadb:latest
 error: database is uninitialized and password option is not specified
   You need to specify one of MYSQL_ROOT_PASSWORD, MYSQL_ALLOW_EMPTY_PASSWORD and MYSQL_RANDOM_ROOT_PASSWORD
 ```
-Note! It is expected that container fails with an error message
+Note! It is expected that container fails with an error message.
 
 - Open container documentation using the following link
 
@@ -207,4 +207,4 @@ db1
 information_schema
 ```
 
-Note! you should be able to access the mariadb service using dbuser
+Note! You should be able to access the mariadb service using dbuser.

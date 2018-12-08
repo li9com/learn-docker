@@ -3,14 +3,14 @@
 
 
 ## Labs
-The repository consists of a number of subdirectories, which include all files required for Labs.
-Lab are structured as follows:
+The repository consists of a number of subdirectories, which include all files required for the Labs.
+Labs are structured as follows:
 
 Lab    | Description
 ------ | -----------
 Lab 0  | Creating Lab environment (please see below in this document)
 Lab 1  | Docker installation
-Lab 2  | Docker basic configuration 
+Lab 2  | Docker basic configuration
 Lab 3  | Getting help
 Lab 4  | Manaing images
 Lab 5  | Managing containers

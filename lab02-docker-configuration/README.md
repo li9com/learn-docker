@@ -12,7 +12,7 @@ systemctl status -l docker
 - Check docker.service systemd file:
 
 ```
-cat /usr/lib/systemd/system/docker.service 
+cat /usr/lib/systemd/system/docker.service
 ```
 
 You should see a similar output:
@@ -37,4 +37,4 @@ cat /etc/sysconfig/docker-storage
 cat /etc/sysconfig/docker-network
 ```
 
-Note! it is expected that /run/containers/registries.conf doesn't exist by default
+Note! It is expected that /run/containers/registries.conf doesn't exist by default.

@@ -4,7 +4,9 @@ This document will guide you on how to manage Docker images via the "docker" uti
 ## Searching images
 
 ### Docker Hub
-Note! This part of the lab is peformed on your workstation and not inside the VM
+
+Note! This part of the lab is peformed on your workstation and not inside the VM.
+
 - Open your browser (like FireFox or Google Chrome)
 - Open the link https://hub.docker.com
 - Type "mariadb" in the search field
@@ -144,7 +146,7 @@ man docker-images
 docker images
 ```
 
-Note! You should be able to see at least 2 images (httpd:latest and httpd:2.2)
+Note! You should be able to see at least 2 images (httpd:latest and httpd:2.2).
 
 - Display only image IDs
 
@@ -243,7 +245,8 @@ IMAGE               CREATED             CREATED BY                              
 ```
 
 - Try to Check history of the following images: mariadb, centos:7, wildfly
-Note! This may require to pull images first
+
+Note! This may require to pull images first.
 
 - Check the "docker-inspect" man page
 
