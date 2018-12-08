@@ -102,4 +102,4 @@ $
 ```
 
 ## Getting help online
-Visit [docs.docker.com](https://docs.docker.com) page, select your docker version (*Docker 1.13*) in a menu on a right side of the page. Explore documentation through the menu on the right side of the page.
+Visit [docs.docker.com](https://docs.docker.com) page, select your docker version (*Docker 1.13*) in a menu on a right side of the page. Explore documentation through the menu on the left side of the page.

@@ -9,6 +9,12 @@ The lab environment comes with Docker pre-installed and in most cases you do not
 sudo yum install docker -y
 ```
 
+- Install additional usefull packages as follows:
+
+```
+sudo yum install git vim jq -y
+```
+
 ## Start the service
 - Start the docker service as follows:
 
