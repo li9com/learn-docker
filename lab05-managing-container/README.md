@@ -1,13 +1,13 @@
 # Lab5 - Managing containers
 This document guide you on how to manage Docker containers via the "docker" utility.
 This includes:
-- Starting containers
-- Stopping containers
-- Deleting containers
+- Starting new containers
+- Stopping/starting existing containers
 - Listing running and stopped containers
 - Gathering container details
-- Exposing containers
-
+- Deleting containers
+- Exposing container ports on the node
+- Executing a custom command inside a conainer
 
 ## Starting new containers
 - Check the "docker-run" man page
@@ -262,7 +262,7 @@ man docker-inspect
 - Inspect container details using "docker inspect"
 
 ```
-[vagrant@node1 ~]$ docker inspect myhttpd
+[vagrant@node1 ~]$  | jq '.'
 [
     {
         "Id": "49fc9eb92d3d3802c62b2218197b8e375b6c56457ad4337d66590d861b282a64",
@@ -462,19 +462,20 @@ man docker-inspect
 map[80/tcp:[]]
 ```
 
-- Try to access containerized application
+- Try to reach httpd running in container on this IP address
 
 ```
-[vagrant@node1 ~]$ curl  http://172.17.0.5
+[vagrant@node1 ~]$ curl http://$(docker inspect --format '{{.NetworkSettings.IPAddress}}' myhttpd)
 <html><body><h1>It works!</h1></body></html>
 ```
 
+This is useful in scripts.
 Note! We started a httpd container which is Apache web server. It is expected that the application answer is "It works"
 
 
 ## Deleting containers
 
-- Check the "dicker-rm" man page
+- Check the "docker-rm" man page
 
 ```
 man docker-rm
@@ -548,11 +549,11 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 [vagrant@node1 ~]$
 ```
 
-Note! We will use this to clean the system
+Note! We will use this command often to clean the system
 
-## Exposing containers
+## Exposing container ports on the node
 
-By default, containers use an internal network which is not accessible outside of the Docker node.  Container port may be bound to a Docker node port using "-p" option of the "docker run".
+By default, containers use an internal network which is not accessible from outside of the Docker node.  Container port may be bound to a Docker node port using "-p" option of the "docker run".
 
 - Check the "docker-run" man page. Look for -p, or "--publish" option
 
@@ -686,7 +687,7 @@ or
 http://172.24.0.11:8080
 ```
 
-Note! You need to access the service from your Vagrant host and not inside the VM
+Note! You need to access the service from your Vagrant host and not from inside the VM
 
 Note! You should see the default Jenkins configration page named "Getting Started"
 
@@ -696,9 +697,9 @@ Note! You should see the default Jenkins configration page named "Getting Starte
 docker rm -f $(docker ps -aq)
 ```
 
-## Executing a custom command inside a conainer
-You may execute override command/application started once container is run. 
-This is achieved by passing an argument like shown below
+## Executing custom commands inside a conainer
+You may override the default command (application) started once a container is run. 
+This is achieved by passing a *COMMAND* argument like shown below
 
 ```
 docker run IMAGE COMMAND
@@ -773,6 +774,8 @@ sudo yum downgrade docker docker-client docker-common
 sudo systemctl restart docker
 ```
 
+This is a temporary issue, described in [BZ 1655214](https://bugzilla.redhat.com/show_bug.cgi?id=1655214).
+
 - Connect to httpd container console and modify index.html
 
 ```
@@ -790,10 +793,7 @@ root@9335837758fd:/usr/local/apache2# exit
 - Make sure that application answer has been changed
 
 ```
-[vagrant@node1 ~]$ docker inspect --format='{{ .NetworkSettings.IPAddress }}' httpd
-172.17.0.2
-
-[vagrant@node1 ~]$ curl 172.17.0.2
+[vagrant@node1 ~]$ curl http://$(docker inspect --format='{{ .NetworkSettings.IPAddress }}' httpd)
 It has been changed
 ```
 
