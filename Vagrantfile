@@ -13,6 +13,6 @@ end
 $script = <<SCRIPT
   groupadd docker
   usermod -aG docker vagrant
-  yum install docker git vim -y
+  yum install docker git vim jq -y
   systemctl enable docker --now
 SCRIPT

@@ -15,4 +15,3 @@ WORKDIR $EAP_HOME
 USER 1001
 EXPOSE 8080 9990
 CMD [ "bin/standalone.sh","-Djboss.bind.address=0.0.0.0","-Djboss.bind.address.management=0.0.0.0" ]
-

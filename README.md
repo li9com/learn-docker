@@ -1,16 +1,16 @@
 # Learn Docker
-"Learn Docker" is is a step by step hands-on guide which gives some practical Docker-related examples
+"Learn Docker" is is a step by step hands-on guide which teaches some practical Docker-related skills
 
 
 ## Labs
-The repository gives a number of folders which proides all files required for a Lab.
-The lab are structured as follows:
+The repository consists of a number of subdirectories, which include all files required for the Labs.
+Labs are structured as follows:
 
 Lab    | Description
 ------ | -----------
-Lab 0  | Creating lab environment (please see below in this document)
+Lab 0  | Creating Lab environment (please see below in this document)
 Lab 1  | Docker installation
-Lab 2  | Docker basic configuration 
+Lab 2  | Docker basic configuration
 Lab 3  | Getting help
 Lab 4  | Manaing images
 Lab 5  | Managing containers
@@ -18,18 +18,18 @@ Lab 6  | Using environment variables
 Lab 7  | Using persistent storage
 Lab 8  | Starting multicontainer applications
 Lab 9  | Starting private registry
-Lab 10 | Creating new images by docker commit
+Lab 10 | Creating new images with docker commit
 Lab 11 | Creating a simple Dockerfile
 Lab 12 | Importing and exporting images
 Lab 13 | Advanced Dockerfile
 Lab 14 | Containerizing Jboss EAP
 
 
-## Creating lab environment
+## Creating Lab environment
 Most of the labs can be run on any Linux based VMs. However all labs are created and tested on CentOS 7 only.
 
 ### Virtual Machine
-The repsitory includes a Vagrantfile which deploys a VM with the following configuration option:
+The repsitory includes a Vagrantfile which deploys a VM with the following configuration:
 
 Option   | Value
 -------- | -----
@@ -43,8 +43,8 @@ Box      | centos/7
 
 The VM is customized as follows:
 - docker and git packages are installed
-- docker Linux groups is created
-- the vagrant user is a member of the docker Linux group (this allows to use Docker client under unprivileges user)
+- docker Linux group is created
+- vagrant user is a member of the docker Linux group (this allows to use Docker client under unprivileged user)
 
 
 ### Host machine requrements
@@ -56,8 +56,8 @@ The host machine can be configured on the following OS:
 - CentOS 7
 
 The following software is required:
-- VirtualBox(Windows and MacOS)
-- libvirt(Linux only)
+- VirtualBox (Windows and MacOS)
+- libvirt (Linux only)
 - Vagrant
 - git
 - vim
@@ -72,9 +72,9 @@ cd learn-docker
 vagrant up
 ```
 
-### Connecting to Lab VM
+### Connecting to the Lab VM
 
-Once VM is provisioned, you may connect to VM using SSH as follows:
+Once the VM is provisioned, you may connect to it using SSH as follows:
 
 ```
 vagrant ssh

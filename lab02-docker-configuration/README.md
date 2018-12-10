@@ -1,6 +1,6 @@
 # Lab2 - Docker configuration
-This document explains how to configure Docker on a CentOS 7 machine.
-The lab environment comes with Docker pre-installed and in most cases you do not need to implement this scenario. However, if you use an external node, you may need to install Docker packages and start the docker service.
+This document explains how to install Docker on a CentOS 7 VM.
+The lab environment comes with Docker pre-installed and in most cases you do not need to implement this scenario. However, if you use your own VM, you would need to install Docker packages and start the docker service.
 
 ## Configuration
 - Check Docker daemon startup options as follows:
@@ -12,7 +12,7 @@ systemctl status -l docker
 - Check docker.service systemd file:
 
 ```
-cat /usr/lib/systemd/system/docker.service 
+cat /usr/lib/systemd/system/docker.service
 ```
 
 You should see a similar output:
@@ -37,4 +37,4 @@ cat /etc/sysconfig/docker-storage
 cat /etc/sysconfig/docker-network
 ```
 
-Note! it is expected that /run/containers/registries.conf doesn't exist by default
+Note! It is expected that /run/containers/registries.conf doesn't exist by default.

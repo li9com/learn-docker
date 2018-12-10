@@ -1,11 +1,5 @@
 # Lab11 - Creating a simple Dockerfile
 
-## Before we begin
-- Remove all running and stopped containers
-```
-docker rm -f $(docker ps -aq)
-```
-
 ## Building Apache image from Dockerfile
 
 - Check Dockerfile in the "lab11-simple-Dockerfile" directory
@@ -13,24 +7,40 @@ docker rm -f $(docker ps -aq)
 
 ```
 [vagrant@node1 lab11-simple-Dockerfile]$ docker build -t custom_httpd .
-Sending build context to Docker daemon 6.144 kB
+Sending build context to Docker daemon 14.85 kB
 Step 1/3 : FROM centos:7
- ---> 75835a67d134
+ ---> 1e1148e4cc2c
 Step 2/3 : RUN yum install -y httpd &&     yum clean all &&     echo "It works" >/var/www/html/index.html
- ---> Using cache
- ---> 02597047832e
+ ---> Running in 072310efe546
+Loaded plugins: fastestmirror, ovl
+Determining fastest mirrors
+ * base: mirror.hosting90.cz
+ * extras: centos.lonyai.com
+ * updates: mirror.hosting90.cz
+Resolving Dependencies
+--> Running transaction check
+---> Package httpd.x86_64 0:2.4.6-88.el7.centos will be installed
+...
+Installed:
+  httpd.x86_64 0:2.4.6-88.el7.centos                                            
+...
+ ---> 0d82c63cfd42
+Removing intermediate container 072310efe546
 Step 3/3 : CMD /usr/sbin/httpd -DFOREGROUND
- ---> Using cache
- ---> 8710b43c848d
+ ---> Running in 9eed2f0da550
+ ---> 587ad11958fa
+Removing intermediate container 9eed2f0da550
 Successfully built 8710b43c848d
+[vagrant@node1 lab11-simple-Dockerfile]$ cd ..
+[vagrant@node1 ~]$
 ```
 
-Note! your output maybe different. The output above contains cached data to redunce number of lines
+Note! Your output may be different.
 
-- Make sure that images exists
+- Make sure that newly built image exists
 
 ```
-[vagrant@node1 lab11-simple-Dockerfile]$ docker images custom_httpd
+[vagrant@node1 ~]$ docker images custom_httpd
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 custom_httpd        latest              8710b43c848d        9 minutes ago       255 MB
 ```
@@ -38,7 +48,7 @@ custom_httpd        latest              8710b43c848d        9 minutes ago       
 - Check image properties
 
 ```
-[vagrant@node1 lab11-simple-Dockerfile]$ docker inspect custom_httpd
+[vagrant@node1 ~]$ docker inspect custom_httpd | jq '.'
 [
     {
         "Id": "sha256:8710b43c848de77942f605e63808d101f1aa3d12e228c21f0b01c6e21f8ae08a",
@@ -146,7 +156,7 @@ custom_httpd        latest              8710b43c848d        9 minutes ago       
 - Start a new httpd container from the custom_httpd image
 
 ```
-[vagrant@node1 ~]$ docker run -d --name httpd -p 8080:80  custom_httpd
+[vagrant@node1 ~]$ docker run -d --name httpd -p 8080:80 custom_httpd
 ed81063df99bfd401b6a7fe0f69f5b180baa030f6c59eb3496f9c8a0da733364
 [vagrant@node1 ~]$ docker ps
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                  NAMES
@@ -156,10 +166,7 @@ ed81063df99b        custom_httpd        "/bin/sh -c '/usr/..."   3 seconds ago  
 - Access the service
 
 ```
-[vagrant@node1 ~]$ docker inspect --format='{{ .NetworkSettings.IPAddress }}' httpd
-172.17.0.2
-
-[vagrant@node1 ~]$ curl 172.17.0.2
+[vagrant@node1 ~]$ curl http://$(docker inspect --format='{{ .NetworkSettings.IPAddress }}' httpd)
 It works
 ```
 

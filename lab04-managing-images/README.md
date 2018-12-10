@@ -1,10 +1,12 @@
 # Lab4 - Managing Docker images
-This document guide you on how to manage Docker images via the "docker" utility
+This document will guide you on how to manage Docker images via the "docker" utility
 
 ## Searching images
 
 ### Docker Hub
-Note! This part of the lab is peformed on your workstation and not inside the VM
+
+Note! This part of the lab is peformed on your workstation and not inside the VM.
+
 - Open your browser (like FireFox or Google Chrome)
 - Open the link https://hub.docker.com
 - Type "mariadb" in the search field
@@ -13,7 +15,7 @@ Note! This part of the lab is peformed on your workstation and not inside the VM
 You should be able to see a list of mariadb-related images
 
 - Click on the "> DETAILS" link on the right
-- Scroll down the documenation
+- Scroll down trough the documenation
 
 ### docker search
 - Check the "docker-search" man page
@@ -122,7 +124,7 @@ Digest: sha256:9784d70c8ea466fabd52b0bc8cde84980324f9612380d22fbad2151df9a430eb
 Status: Downloaded newer image for docker.io/httpd:2.2
 ```
 
-- Make sure that both images exist locally:
+- Make sure that both images do exist locally:
 
 ```
 [vagrant@node1 ~]$ docker images
@@ -144,7 +146,7 @@ man docker-images
 docker images
 ```
 
-Note! You should be able to see at least 2 images (httpd:latest and httpd:2.2)
+Note! You should be able to see at least 2 images (httpd:latest and httpd:2.2).
 
 - Display only image IDs
 
@@ -169,6 +171,8 @@ IMAGE ID              TAG                 REPOSITORY
 e06c3dbbfe23:2.2      docker.io/httpd
 ```
 
+Docker uses [Go templates](https://golang.org/pkg/text/template/) which you can use to manipulate the output format of certain commands and log drivers.
+
 ## Tagging images
 - Check the "docker-tag" man page
 
@@ -176,7 +180,7 @@ e06c3dbbfe23:2.2      docker.io/httpd
 man docker-tag
 ```
 
-- Tag the image "httpd" as "myapache"
+- Tag the image "httpd" as "apache"
 
 ```
 [vagrant@node1 ~]$ docker images
@@ -184,6 +188,7 @@ REPOSITORY          TAG                 IMAGE ID            CREATED             
 docker.io/httpd     latest              2a51bb06dc8b        2 weeks ago         132 MB
 docker.io/httpd     2.2                 e06c3dbbfe23        10 months ago       171 MB
 [vagrant@node1 ~]$ docker tag httpd apache
+[vagrant@node1 ~]$
 ```
 
 - Make sure that "docker images" shows new tag
@@ -195,6 +200,8 @@ apache              latest              2a51bb06dc8b        2 weeks ago         
 docker.io/httpd     latest              2a51bb06dc8b        2 weeks ago         132 MB
 docker.io/httpd     2.2                 e06c3dbbfe23        10 months ago       171 MB
 ```
+
+Note, that *IMAGE ID* is identical for *apache:latest* and *docker.io.httpd* container images. The actual consumed storage space has not increased.
 
 - Tag the httpd image with tag=2.2 as apache:v2.2
 
@@ -238,7 +245,8 @@ IMAGE               CREATED             CREATED BY                              
 ```
 
 - Try to Check history of the following images: mariadb, centos:7, wildfly
-Note! This may require to pull images first
+
+Note! This may require to pull images first.
 
 - Check the "docker-inspect" man page
 
@@ -360,6 +368,13 @@ man docker-inspect
 ]
 ```
 
+For better clarity try to pipe the JSON output to the jq command, to get it colorized.
+
+```
+[vagrant@node1 ~]$ docker inspect httpd | jq '.'
+...
+```
+
 - Display environment variables for the httpd image
 
 ```
@@ -391,10 +406,10 @@ docker.io/httpd     2.2                 e06c3dbbfe23        10 months ago       
 
 - Make sure that image IDs are the same for docker.io/httpd:2.2 and apache:v2.2 images
 
-- Untag the image "apache:v2.2". Make sure that image has been untagged
+- Untag the image apache:v2.2. Make sure that image tagged apache:v2.2 is no longer on the list
 
 ```
-[vagrant@node1 ~]$ docker rmi  apache:v2.2
+[vagrant@node1 ~]$ docker rmi apache:v2.2
 Untagged: apache:v2.2
 Untagged: docker.io/httpd@sha256:9784d70c8ea466fabd52b0bc8cde84980324f9612380d22fbad2151df9a430eb
 
@@ -405,6 +420,7 @@ docker.io/httpd     latest              2a51bb06dc8b        2 weeks ago         
 docker.io/httpd     2.2                 e06c3dbbfe23        10 months ago       171 MB
 ```
 
+Note that docker mentioned that it has *Untagged* container image. The actual consumed storage space has not changed.
 
 - Delete image docker.io/httpd:2.2 and make sure that all image layer have been deleted
 
@@ -417,13 +433,13 @@ Deleted: sha256:b85fe9130aef01e870e6d0a108fd003cf803d5da7fe479513a21de0643d7ecae
 Deleted: sha256:40154da5ddb3570d82395b9c632880baca5f12ad21ea8c699f3897cd5ed9b237
 Deleted: sha256:f5863aa45770c31d7555287f821930e41bc466b97464733ccf980f16393d99d9
 Deleted: sha256:4bcdffd70da292293d059d2435c7056711fab2655f8b74f48ad0abe042b63687
-
-
-
 [vagrant@node1 ~]$ docker images
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 apache              latest              2a51bb06dc8b        2 weeks ago         132 MB
 docker.io/httpd     latest              2a51bb06dc8b        2 weeks ago         132 MB
 ```
 
-- Untag the "apache:latest" image
+Note that this time docker mentioned that it has *Deleted* container image layers. The storage usage has decreased.
+
+
+- Untag the apache:latest image

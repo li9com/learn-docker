@@ -1,7 +1,7 @@
 # Lab8 - Starting multicontainer application
-In this lab you will start 2-tier application - WordPress.  WordPress requires access to a mysql database.
+In this lab you will start 2-tier application - WordPress.  WordPress is a PHP application, which requires access to a MySQL database.
 
-## Start mariadb database
+## Start MySQL database
 
 - Prepare persistent storage
 
@@ -27,16 +27,14 @@ docker run -d --name mariadb \
 [vagrant@node1 ~]$ docker ps
 CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS              PORTS               NAMES
 fde0bbf18699        mariadb             "docker-entrypoint..."   About a minute ago   Up About a minute   3306/tcp            mariadb
-
-
-[vagrant@node1 /]$ docker exec  mariadb mysql -uwp_user -pwp_password -h127.0.0.1 -e 'show databases' wp_db
+[vagrant@node1 ~]$ docker exec mariadb mysql -uwp_user -pwp_password -h127.0.0.1 -e 'show databases' wp_db
 Database
 information_schema
 wp_db
 ```
 
 ## WordPress service
-- Check WordPress image documentation accessible via
+- Explore WordPress image documentation accessible via
 
 ```
 https://hub.docker.com/_/wordpress
@@ -45,7 +43,7 @@ https://hub.docker.com/_/wordpress
 - Pull the wordpress image
 
 ```
-docker pull wordress
+docker pull wordpress
 ```
 
 - Inspect wordpress image
@@ -55,7 +53,7 @@ docker pull wordress
 map[/var/www/html:{}]
 ```
 
-Note! We need to mount a volume to /var/www/html
+Note! We need to mount a volume to /var/www/html.
 
 - Configure WordPress persistent storage
 
@@ -114,5 +112,5 @@ drwxr-xr-x. 18 33 tape 12288 Aug  2 20:39 wp-includes
 http://node1.172.24.0.11.nip.io:8080
 http://172.24.0.11:8080
 
-- Finish WordPress installation
+- Complete WordPress installation
 - Make sure that you are not asked to provide any database details
