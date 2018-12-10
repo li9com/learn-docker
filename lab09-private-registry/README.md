@@ -2,6 +2,7 @@
 This lab explains how to create an internal registry
 
 ## Starting a registry from the official registry image
+
 - Check official registry documentation at
 
 ```
@@ -23,11 +24,11 @@ docker pull registry:2
 - Inspect docker registry image
 
 ```
-[vagrant@node1 lab9-private-registry]$ docker inspect --format='{{ .Config.Volumes }}' registry:2
+[vagrant@node1 ~]$ docker inspect --format='{{ .Config.Volumes }}' registry:2
 map[/var/lib/registry:{}]
 ```
 
-Note! We need to mount persistent data tp /var/lib/registry.
+Note! We need to mount persistent data to /var/lib/registry.
 
 - Start registry container with the following configuration
 
@@ -56,7 +57,7 @@ CONTAINER ID        IMAGE               COMMAND                  CREATED        
 - Try to access registry service using curl. Make sure that it returns '{}'
 
 ```
-[vagrant@node1 ~]$ curl   http://localhost:5000/v2/
+[vagrant@node1 ~]$ curl http://localhost:5000/v2/
 {}[vagrant@node1 ~]$
 ```
 
@@ -70,10 +71,9 @@ docker tag httpd localhost:5000/apache
 - Make sure that the image has been properly tagged
 
 ```
-[vagrant@node1 ~]$ docker images apache
+[vagrant@node1 ~]$ docker images localhost:5000/apache
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
-apache              latest              2a51bb06dc8b        2 weeks ago         132 MB
-
+localhost:5000/apache   latest              2a51bb06dc8b        3 weeks ago         132 MB
 [vagrant@node1 ~]$ docker images httpd
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 docker.io/httpd     latest              2a51bb06dc8b        2 weeks ago         132 MB
@@ -92,37 +92,13 @@ ef68f6734aa4: Pushed
 latest: digest: sha256:63dba1dad8fe8a920226a631f8189d736b4a5129c2d2edc046a46f36ffc0091c size: 1367
 ```
 
-- Make sure that image was stored on persistent storage
+- Make sure that image is stored on persistent storage
 
 ```
 [vagrant@node1 ~]$ find /data/registry
 /data/registry
 /data/registry/docker
-/data/registry/docker/registry
-/data/registry/docker/registry/v2
-/data/registry/docker/registry/v2/blobs
-/data/registry/docker/registry/v2/blobs/sha256
-/data/registry/docker/registry/v2/blobs/sha256/2a
-/data/registry/docker/registry/v2/blobs/sha256/2a/2a51bb06dc8baa17b4d78b7ca0d87f5aadbd98d711817dbbf2cfe49211556c30
-/data/registry/docker/registry/v2/blobs/sha256/2a/2a51bb06dc8baa17b4d78b7ca0d87f5aadbd98d711817dbbf2cfe49211556c30/data
-/data/registry/docker/registry/v2/blobs/sha256/63
-/data/registry/docker/registry/v2/blobs/sha256/63/63dba1dad8fe8a920226a631f8189d736b4a5129c2d2edc046a46f36ffc0091c
-/data/registry/docker/registry/v2/blobs/sha256/63/63dba1dad8fe8a920226a631f8189d736b4a5129c2d2edc046a46f36ffc0091c/data
-/data/registry/docker/registry/v2/blobs/sha256/99
-/data/registry/docker/registry/v2/blobs/sha256/99/992c7790d5f3a52fa534a56f857b11ebc49011ef1d23e5ae3ec6116105a011db
-/data/registry/docker/registry/v2/blobs/sha256/99/992c7790d5f3a52fa534a56f857b11ebc49011ef1d23e5ae3ec6116105a011db/data
-/data/registry/docker/registry/v2/blobs/sha256/ac
-/data/registry/docker/registry/v2/blobs/sha256/ac/ac13924397e3456b2a26d56bef26d5792cdbd978f72ef9cc1fb15a027e58c71d
-/data/registry/docker/registry/v2/blobs/sha256/ac/ac13924397e3456b2a26d56bef26d5792cdbd978f72ef9cc1fb15a027e58c71d/data
-/data/registry/docker/registry/v2/blobs/sha256/91
-/data/registry/docker/registry/v2/blobs/sha256/91/91b81769f14a044f1deebeb7fdf5c0e743b6aef65ec2dfe1c8beb8d36a5dd875
-/data/registry/docker/registry/v2/blobs/sha256/91/91b81769f14a044f1deebeb7fdf5c0e743b6aef65ec2dfe1c8beb8d36a5dd875/data
-/data/registry/docker/registry/v2/blobs/sha256/a5
-/data/registry/docker/registry/v2/blobs/sha256/a5/a5a6f2f73cd8abbdc55d0df0d8834f7262713e87d6c8800ea3851f103025e0f0
-/data/registry/docker/registry/v2/blobs/sha256/a5/a5a6f2f73cd8abbdc55d0df0d8834f7262713e87d6c8800ea3851f103025e0f0/data
-/data/registry/docker/registry/v2/blobs/sha256/fe
-/data/registry/docker/registry/v2/blobs/sha256/fe/fec7170426de5702cb93cc68c52509c9447b6ee881549abb4bcc5bccaa1b77c8
-/data/registry/docker/registry/v2/blobs/sha256/fe/fec7170426de5702cb93cc68c52509c9447b6ee881549abb4bcc5bccaa1b77c8/data
+...
 /data/registry/docker/registry/v2/repositories
 /data/registry/docker/registry/v2/repositories/apache
 /data/registry/docker/registry/v2/repositories/apache/_layers
@@ -181,9 +157,7 @@ Status: Downloaded newer image for localhost:5000/apache:latest
 - Make sure the Apache service works propery
 
 ```
-[vagrant@node1 ~]$ docker inspect --format='{{ .NetworkSettings.IPAddress }}' httpd
-172.17.0.3
-[vagrant@node1 ~]$ curl 172.17.0.3
+[vagrant@node1 ~]$ curl http://$(docker inspect --format='{{ .NetworkSettings.IPAddress }}' httpd)
 <html><body><h1>It works!</h1></body></html>
 ```
 

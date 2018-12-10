@@ -1,19 +1,13 @@
 # Lab12 - Importing and exporting images
+
 This lab covers the following:
 - Importing and exporting container layers
 - Saving and loading docker images
 - Creating an echo container image
 - Create a base OS container image
 
-## Before we begin
-
-- Delete all running containers
-
-```
-docker rm -f $(docker ps -aq)
-```
-
 ## Importing and exporing container layers
+
 - Check the "docker-import" and "docker-export" man pages
 
 ```
@@ -50,7 +44,6 @@ newimage            latest              174a538aa225        51 seconds ago      
 ```
 
 Note! This image is useless for now. We will learn how to improve it a bit later.
-
 
 ## Echo container image
 
@@ -156,8 +149,7 @@ docker rmi httpd
 ```
 docker load -i  /tmp/httpd.tar
 ```
-
-Note! There is not needs to specify image name since it was saved.
+Note! There is no needs to specify image name since it is saved in image metadata file.
 
 - Make sure that image exists with all metadata
 
@@ -169,12 +161,12 @@ docker.io/httpd     latest              2a51bb06dc8b        2 weeks ago         
 
 ## Base OS images
 
-
 The following script can be used to create a base os image
 
 ```
 sudo mkdir /tmp/base
-sudo yum --downloadonly --downloaddir . install centos-release
+sudo yum install -y yum-utils
+yumdownloader centos-release
 sudo rpm --root /tmp/base --nodeps -ivh centos-release*.rpm
 sudo yum --installroot=/tmp/base -y --setopt=tsflags=nodocs install yum
 sudo rm -rf /tmp/base/var/cache/yum
@@ -200,3 +192,17 @@ REPOSITORY          TAG                 IMAGE ID            CREATED             
 centos7_base        latest              6a23396da346        6 seconds ago       256 MB
 ```
 
+- Run container from newly created image
+
+```
+[vagrant@node1 ~]$ docker run -ti centos7_base /bin/bash
+bash-4.2# exit
+exit
+[vagrant@node1 ~]
+```
+
+- Remove all containers
+
+```
+docker rm -f $(docker ps -aq)
+```

@@ -1,14 +1,6 @@
 # Lab7 - Using persistent storage
 In this lab, you will start Docker containers on a persistent storage.
 
-## Before we begin
-
-- Remove all containers
-
-```
-docker rm -f $(docker ps -aq)
-```
-
 ## Apache service
 In this lab chapter, we will be using another Apache Docker image, which is OpenShift-ready.
 The image name is httpd-24-centos7
@@ -47,7 +39,7 @@ docker rm -f $(docker ps -aq)
 - Inspect the image docker.io/centos/httpd-24-centos7. We need to understand which storage is used
 
 ```
-[vagrant@node1 ~]$ docker inspect docker.io/centos/httpd-24-centos7
+[vagrant@node1 ~]$ docker inspect docker.io/centos/httpd-24-centos7 | jq '.'
 [
     {
         "Id": "sha256:a562f884ddeae2ddbca6d9e91fe8deac946589263010b036aa46df1d6ceef7b8",
@@ -240,7 +232,7 @@ docker rm -f $(docker ps -aq)
 ]
 ```
 
-Note! It looks like persistent storage should be under standard RHEL Apache directory */var/www/html*.
+Note! The *HTTPD_DATA_PATH* variable points to */var/www* directory. It looks like persistent storage should be under standard RHEL Apache directory */var/www/html*.
 
 - Create a persistent storage for Apache container
 
@@ -248,13 +240,13 @@ Note! It looks like persistent storage should be under standard RHEL Apache dire
 sudo mkdir -p /data/apache
 sudo chcon -t container_file_t /data/apache
 sudo chown 1001:0 /data/apache
-sudo chown g+s /data/apache
+sudo chmod g+s /data/apache
 sudo sh -c 'echo "Custom page" > /data/apache/index.html'
 ```
 
-Note! We created a custom index.html. This should be used by new apache container.
+Note! We have created a custom directory with index.html file in it. We will mount this directory into the new apache containers on start.
 
-- Start 3  apache containers using persistent strage
+- Start 3 apache containers using persistent strage
 
 ```
 [vagrant@node1 ~]$ docker run -d --name httpd1 -p 8081:8080 -v /data/apache:/var/www/html docker.io/centos/httpd-24-centos7
@@ -277,50 +269,33 @@ CONTAINER ID        IMAGE                               COMMAND                 
 8bc976f8b87e        docker.io/centos/httpd-24-centos7   "container-entrypo..."   22 seconds ago      Up 21 seconds       8443/tcp, 0.0.0.0:8081->8080/tcp   httpd1
 ```
 
-Gather IP addresses
+Gather IP addresses and access apache web services
 
 ```
-[vagrant@node1 ~]$ docker inspect --format='{{ .NetworkSettings.IPAddress }}' httpd1
-172.17.0.2
-[vagrant@node1 ~]$ docker inspect --format='{{ .NetworkSettings.IPAddress }}' httpd2
-172.17.0.3
-[vagrant@node1 ~]$ docker inspect --format='{{ .NetworkSettings.IPAddress }}' httpd3
-172.17.0.4
-```
-
-Access apache web services
-
-```
-[vagrant@node1 ~]$ curl 172.17.0.2:8080
+[vagrant@node1 ~]$ curl http://$(docker inspect --format='{{ .NetworkSettings.IPAddress }}' httpd1):8080
 Custom page
-[vagrant@node1 ~]$ curl 172.17.0.3:8080
+[vagrant@node1 ~]$ curl http://$(docker inspect --format='{{ .NetworkSettings.IPAddress }}' httpd2):8080
 Custom page
-[vagrant@node1 ~]$ curl 172.17.0.4:8080
+[vagrant@node1 ~]$ curl http://$(docker inspect --format='{{ .NetworkSettings.IPAddress }}' httpd3):8080
 Custom page
 ```
 
 All services should return the same data
 
-- Update index.html and make sure that new page is accessible
+- Update index.html and make sure that the returned content has changed
 
 ```
-sudo sh -c 'echo "New line" >> /data/apache/index.html'
 [vagrant@node1 ~]$ sudo sh -c 'echo "New line" >> /data/apache/index.html'
-
-[vagrant@node1 ~]$ curl 172.17.0.2:8080
+[vagrant@node1 ~]$ curl http://$(docker inspect --format='{{ .NetworkSettings.IPAddress }}' httpd1):8080
 Custom page
 New line
-
-[vagrant@node1 ~]$ curl 172.17.0.3:8080
+[vagrant@node1 ~]$ curl http://$(docker inspect --format='{{ .NetworkSettings.IPAddress }}' httpd2):8080
 Custom page
 New line
-
-[vagrant@node1 ~]$ curl 172.17.0.4:8080
+[vagrant@node1 ~]$ curl http://$(docker inspect --format='{{ .NetworkSettings.IPAddress }}' httpd3):8080
 Custom page
 New line
 ```
-
-## Persistent MariaDB
 
 - Remove all containers
 
@@ -328,14 +303,17 @@ New line
 docker rm -f $(docker ps -aq)
 ```
 
-- Check location of MariaDB data
+## Persistent MariaDB
+
+
+- Check location of MariaDB data volume
 
 ```
 [vagrant@node1 learn-docker]$ docker inspect --format='{{ .Config.Volumes }}' mariadb
 map[/var/lib/mysql:{}]
 ```
 
-Note! It looks like /var/lib/mysql should be used for persistent storage.
+Note! It looks like /var/lib/mysql should be used for the persistent storage.
 
 - Configure mariadb persistent storage
 
@@ -355,6 +333,7 @@ docker run -d --name mariadb \
    -e MYSQL_DATABASE=exampledb \
    mariadb
 ```
+
 - Check the status
 
 ```
@@ -395,31 +374,20 @@ drwx------. 2 999 999     4096 Dec  4 07:21 performance_schema
 ```
 
 - Delete the container and start a new one using the same persistent storage
-There is no needs to provide environment variables to create a database and user
+
+There is no need to provide environment variables again to create a database and user, since we are re-using the same directory with database data in it.
 
 ```
 docker rm -f mariadb
-
-docker run -d --name mariadb \
-   -v /data/mysql:/var/lib/mysql \
-   mariadb
+docker run -d --name mariadb -v /data/mysql:/var/lib/mysql mariadb
 ```
 
-You may see the following output:
+- Confirm that new container is running and we still have *exampledb* database.
 
 ```
-[vagrant@node1 ~]$ docker run -d --name mariadb \
->    -v /data/mysql:/var/lib/mysql \
->    mariadb
-793577d26bb5ad72577dc6815f97a1243c73c478d98c2c7ce8ee87daf0e5b654
-
-
 [vagrant@node1 ~]$ docker ps
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
 793577d26bb5        mariadb             "docker-entrypoint..."   1 second ago        Up 1 second         3306/tcp            mariadb
-
-
-
 [vagrant@node1 ~]$ docker exec -it mariadb mysql -udbuser -pdbpassword -h127.0.0.1 -e 'show databases;' exampledb
 +--------------------+
 | Database           |
